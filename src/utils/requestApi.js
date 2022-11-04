@@ -15,4 +15,11 @@ const getAllTalker = async () => {
   return list;
 };
 
-module.exports = getAllTalker;
+const getAllTalkerId = async (id) => {
+  const list = await readTalker();
+  const listId = list.filter((e) => e.id === Number(id));
+
+  return listId;
+};
+
+module.exports = { getAllTalker, getAllTalkerId };
