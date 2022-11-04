@@ -1,6 +1,9 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+
+const randomCrypto = require('./utils/randomToken');
 const { getAllTalker, getAllTalkerId } = require('./utils/requestApi');
+const { validationUserEmail, validationUserPassword } = require('./middlewares/validationLogin');
 
 const app = express();
 app.use(bodyParser.json());
@@ -29,6 +32,11 @@ app.get('/talker/:id', async (request, response) => {
   }
 
   response.status(HTTP_OK_STATUS).json(listTalkerId[0]);
+});
+
+app.post('/login', validationUserEmail, validationUserPassword, async (_request, response) => {
+    const token = randomCrypto();
+    response.status(HTTP_OK_STATUS).json({ token });
 });
 
 app.listen(PORT, () => {

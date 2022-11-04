@@ -22,4 +22,15 @@ const getAllTalkerId = async (id) => {
   return listId;
 };
 
-module.exports = { getAllTalker, getAllTalkerId };
+const postTalkerAdd = async (obj) => {
+  const list = await readTalker();
+  const newList = [...list, obj];
+
+  return newList;
+};
+
+module.exports = {
+  getAllTalker,
+  getAllTalkerId,
+  postTalkerAdd,
+};
