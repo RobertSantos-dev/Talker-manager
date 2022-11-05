@@ -7,6 +7,7 @@ const {
   getAllTalkerId,
   postTalkerAdd,
   putTalkerUpdate,
+  deleteTalkerId,
 } = require('./utils/requestApi');
 const {
   validationUserEmail,
@@ -92,6 +93,13 @@ async (request, response) => {
   const listId = await putTalkerUpdate(obj, Number(id));
 
   response.status(200).json({ id, ...listId });
+});
+
+app.delete('/talker/:id', validationToken, async (request, response) => {
+  const { id } = request.params;
+  await deleteTalkerId(Number(id));
+  
+  response.status(204).end();
 });
 
 app.listen(PORT, () => {

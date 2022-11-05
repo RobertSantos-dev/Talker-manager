@@ -56,9 +56,21 @@ const putTalkerUpdate = async (obj, id) => {
   } catch (error) { console.log(error); }
 };
 
+const deleteTalkerId = async (id) => {
+  try {
+    const list = await readTalker();
+    const newList = list.filter((e) => e.id !== id);
+  
+    await fs.writeFile(path.resolve(__dirname, PATH_DIR), JSON.stringify(newList));
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   getAllTalker,
   getAllTalkerId,
   postTalkerAdd,
   putTalkerUpdate,
+  deleteTalkerId,
 };
