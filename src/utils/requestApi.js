@@ -37,8 +37,28 @@ const postTalkerAdd = async (obj) => {
   } catch (error) { console.log(error); }
 };
 
+const putTalkerUpdate = async (obj, id) => {
+  try {
+    const { name, age, talk } = obj;
+    const list = await readTalker();
+    const newListUpdate = list.find((e) => e.id === id);
+    const newListUpdateIndex = list.findIndex((e) => e.id === id);
+    
+    newListUpdate.name = name;
+    newListUpdate.age = age;
+    newListUpdate.talk = talk;
+    list.splice(newListUpdateIndex, 1, newListUpdate);
+    
+    const newList = JSON.stringify(list);
+    
+    await fs.writeFile(path.resolve(__dirname, PATH_DIR), newList);
+    return newListUpdate;
+  } catch (error) { console.log(error); }
+};
+
 module.exports = {
   getAllTalker,
   getAllTalkerId,
   postTalkerAdd,
+  putTalkerUpdate,
 };

@@ -6,6 +6,7 @@ const {
   getAllTalker,
   getAllTalkerId,
   postTalkerAdd,
+  putTalkerUpdate,
 } = require('./utils/requestApi');
 const {
   validationUserEmail,
@@ -76,6 +77,21 @@ async (request, response) => {
       },
     },
   );
+});
+
+app.put('/talker/:id',
+validationToken,
+validationName,
+validationAge,
+validationTalk,
+validationTalkWatchedAt,
+validationTalkRate,
+async (request, response) => {
+  const obj = request.body;
+  const { id } = request.params;
+  const listId = await putTalkerUpdate(obj, Number(id));
+
+  response.status(200).json({ id, ...listId });
 });
 
 app.listen(PORT, () => {
