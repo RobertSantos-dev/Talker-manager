@@ -67,10 +67,22 @@ const deleteTalkerId = async (id) => {
   }
 };
 
+const queryAllTalkerFilter = async (query) => {
+  try {
+    const list = await readTalker();
+    const listFilter = list.filter(({ name }) => name.includes(query));
+  
+    return listFilter;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 module.exports = {
   getAllTalker,
   getAllTalkerId,
   postTalkerAdd,
   putTalkerUpdate,
   deleteTalkerId,
+  queryAllTalkerFilter,
 };

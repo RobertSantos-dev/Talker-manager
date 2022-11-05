@@ -8,6 +8,7 @@ const {
   postTalkerAdd,
   putTalkerUpdate,
   deleteTalkerId,
+  queryAllTalkerFilter,
 } = require('./utils/requestApi');
 const {
   validationUserEmail,
@@ -21,6 +22,7 @@ const {
 const validationName = require('./middlewares/validationName');
 const validationAge = require('./middlewares/validationAge');
 const validationToken = require('./middlewares/validationToken');
+const validationQuery = require('./middlewares/validationQuery');
 
 const app = express();
 app.use(bodyParser.json());
@@ -34,9 +36,11 @@ app.get('/', (_request, response) => {
   response.status(HTTP_OK_STATUS).send();
 });
 
-app.get('/talker', async (_request, response) => {
-  const listTalker = await getAllTalker();
-  response.status(HTTP_OK_STATUS).json(listTalker);
+app.get('/talker/search', validationToken, validationQuery, async (request, response) => {
+  const { q } = request.query;
+  
+  const list = await queryAllTalkerFilter(q);
+  response.status(200).json(list);
 });
 
 app.get('/talker/:id', async (request, response) => {
@@ -49,6 +53,11 @@ app.get('/talker/:id', async (request, response) => {
   }
 
   response.status(HTTP_OK_STATUS).json(listTalkerId[0]);
+});
+
+app.get('/talker', async (_request, response) => {
+  const listTalker = await getAllTalker();
+  response.status(HTTP_OK_STATUS).json(listTalker);
 });
 
 app.post('/login', validationUserEmail, validationUserPassword, async (_request, response) => {
